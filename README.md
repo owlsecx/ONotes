@@ -18,23 +18,18 @@
 
 ## 📌 Overview
 
-Encrypted operator notes & engagement log
+ONotes is an encrypted operator notebook for engagement notes, templates, attachments metadata, search, and export. Notebooks are stored encrypted at rest under `~/ONotes/` with PBKDF2-HMAC-SHA256 and encrypt-then-MAC; AES-256-CBC is used when PyCryptodome is available, otherwise a documented stdlib keystream. Full CLI and interactive menu are provided.
 
 ---
 
 ## ✨ Features
 
-- Encrypted notebook store under ~/ONotes/ — every notebook is one JSON document encrypted at rest
-- Container: MAGIC|hdr|salt|iv|hmac|ciphertext with PBKDF2-HMAC-SHA256 key derivation and encrypt-then-MAC (HMAC-SHA256) authentication
-- Cipher: AES-256-CBC when PyCryptodome is present, otherwise a stdlib-only HMAC-SHA256 counter-mode keystream (documented below) — both authenticated
-- Notes CRUD — title, tags, markdown-ish body, created/modified timestamps, pin & favourite
-- Full-text search with tag / date / pin filters, AND-terms, "quoted phrases" and -exclusions
-- Engagement templates — recon log, finding write-up, IOC sheet, credentials-handled checklist, timeline
-- Attachment metadata — path + SHA-256 + size, no binaries embedded; verify integrity later
-- Engagement log — timestamped operator activity log
-- Export — Markdown / TXT / JSON (password confirm) and redacted export masking secret patterns
-- Auto-lock after idle, manual lock, change password (full re-encryption with fresh salt + IV)
-- Full CLI (--new, --open, --add, --search, --list, --export, ...) and interactive menu
+- Encrypted notebook store (MAGIC|hdr|salt|iv|hmac|ciphertext) with PBKDF2 and encrypt-then-MAC
+- Notes CRUD with title, tags, markdown-ish body, pin/favourite, and timestamps
+- Full-text search with tag/date/pin filters, AND terms, quoted phrases, and exclusions
+- Engagement templates (recon, finding, IOC, credentials checklist, timeline) and engagement log
+- Attachment metadata (path + SHA-256 + size) with later verify; secret-like data scan
+- Export Markdown/TXT/JSON with optional redaction; re-key via password change; auto/manual lock
 
 ---
 
@@ -48,7 +43,10 @@ Encrypted operator notes & engagement log
 ## 🚀 Usage
 
 ```bash
-./ONotes
+./ONotes --new engagement1 --engagement "Pentest A" --client Acme
+./ONotes --open engagement1 --add --title "Finding" --template finding --body-file note.md
+./ONotes --open engagement1 --search "sqli #web" --export md -o export.md --redact
+./ONotes --help
 ```
 
 ---
